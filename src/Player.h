@@ -41,3 +41,5 @@ public:
 	void update(double deltatime);
 	sf::Sprite getSprite();
 };
+
+

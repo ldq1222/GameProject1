@@ -1,4 +1,5 @@
 #include"Player.h"
+
 Player::Player() {
 	//default settings
 	position.x = 0.0f;
