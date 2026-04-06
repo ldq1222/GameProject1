@@ -23,6 +23,7 @@ int main() {
                 player.walk(-1);
             }
             if (event.type == sf::Keyboard::D) {
+
                 player.walk(1);
             }
             if (event.type == sf::Keyboard::Backspace) {
@@ -34,5 +35,5 @@ int main() {
     }
     
 	return 0;
-}
+}//why are there no changes
 

@@ -13,6 +13,7 @@ Player::Player() {
 	isFalling = 0;
 	countJump = 0;
 }
+
 Player::~Player() {
 	//empty&release (?) &save data
 	//sfml can auto clear Sprites
