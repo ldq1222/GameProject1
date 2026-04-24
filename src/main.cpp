@@ -18,22 +18,9 @@ int main() {
             if (event.type == sf::Event::Closed) {
                 window.close();
             }
-            ////INPUT////
-            if (event.type == sf::Keyboard::A) {
-                player.walk(-1);
-            }
-            if (event.type == sf::Keyboard::D) {
-
-                player.walk(1);
-            }
-            if (event.type == sf::Keyboard::Backspace) {
-                player.jump();
-            }
-        }
-        window.clear();
-        window.draw(player.getsprite());
+            
     }
     
 	return 0;
-}//why are there no changes
+}
 
