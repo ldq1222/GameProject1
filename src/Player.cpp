@@ -24,6 +24,7 @@ void Player::init(std::string texture_name, sf::Vector2f pos, float g) {
 //	sprite.setTexture();
 	sprite.setPosition(position);
 }
+<<<<<<< Updated upstream
 void Player::walk(int dir) {
 	//put whether walk/dash outside this func
 	isWalking = 1;
@@ -31,6 +32,11 @@ void Player::walk(int dir) {
 	speedCurrent.x = speedCommon * directionX;
 //below should be in update
 //	position.x += speedCurrent.x * deltatime;//does the graphics get done here?(no)
+=======
+void Player::walk() {
+	
+}
+>>>>>>> Stashed changes
 
 }
 void Player::climb(int dir) {

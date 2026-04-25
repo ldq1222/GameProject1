@@ -32,12 +32,16 @@ public:
 	//auto gets called out when deleated
 	
 	void init(std::string texture_name, sf::Vector2f pos, float gravity);
+<<<<<<< Updated upstream
 	
 	void walk(int dir);
 	void climb(int dir);
 	void fall();
 	void dash(int dir);
 	void jump();
+=======
+	void walk();
+>>>>>>> Stashed changes
 	void update(double deltatime);
 	sf::Sprite getSprite();
 };
