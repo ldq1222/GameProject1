@@ -5,39 +5,32 @@
 #include <iostream>
 #include "Player.h"
 Player player;
-void input(const sf::Event& event) {
-    if (event.type == sf::Event::KeyPressed) {
-        if (event.key.code == sf::Keyboard::D) {
-///            player.walk();
-        }
-    }
+void inputEvent(const sf::Event& event) {
+   
 }
 /// 
 sf::Vector2f pos;
-sf::Sprite sprite;
-sf::Texture texture;
-void update(double deltatime) {
-    //    player.update(deltatime);
-    ///  
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
-        pos.x += deltatime * 50;
-        sprite.setPosition(pos);
+void inputRealTime() {
+    if(sf::Keyboard::isKeyPressed(sf::Keyboard::D)){
+        player.walk(1);
     }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {
-        pos.x -= deltatime * 50;
-        sprite.setPosition(pos);
+        player.walk(-1);
     }
-    ///
+}
+void update(double deltatime) {
+     player.update(deltatime);
+     return;
+}
+void render(sf::RenderWindow& window) {
+    window.clear();
+    player.render(window);
+    //you can refer to a referance after all
+    window.display();
+    return;
 }
 int main() {
-    /// 
-
-    texture.loadFromFile("assets/pics/square.png");
-    sprite.setTexture(texture);
-    pos.x = 10.0f;
-    pos.y = 0;
-    /// 
-
+    player.init("assets/pics/square.png",{10.0f,0.0f},10.0f);
     sf::Clock clock;
     double deltatime = 0.0f;
     sf::RenderWindow window(sf::VideoMode(640, 480), "sth");
@@ -50,14 +43,13 @@ int main() {
             if (event.type == sf::Event::Closed) {
                 window.close();
             }
-            input(event);
+            inputEvent(event);
         }
+        inputRealTime();
         float elapsed = clock.restart().asSeconds();
         if (elapsed > 1.0f)elapsed = 1.0f;
         update(elapsed);
-        window.clear();
-        window.draw(sprite);
-        window.display();
+        render(window);
     }
     return 0;
 }
