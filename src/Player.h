@@ -8,11 +8,13 @@
 class Player
 {	
 private:
+	bool isJump;
 	sf::Sprite sprite;
 	sf::Texture texture;
 	sf::Vector2f position;
-	sf::Vector2f velosity;
+	sf::Vector2f velocity;
 	float speed;
+	float jumpVel;
 public:
 	Player();
 	//auto gets called out when created
@@ -24,7 +26,8 @@ public:
 	sf::Texture& getTexture();
 	void setPosition(sf::Vector2f pos);
 	void walk(int dir);
-	void update(double deltatime);
+	void jump(int g);
+	void update(double deltatime,float g);
 	void render(sf::RenderWindow& window);
 };
 
