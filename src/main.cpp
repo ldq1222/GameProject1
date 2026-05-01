@@ -4,12 +4,10 @@
 #include <time.h>
 #include <iostream>
 #include "Player.h"
-
+#include "C:\Users\14152\Desktop\GameProject\include\json.hpp"
 Player player;
-// 根据公式 g = 2h / t^2, v0 = 2h / t 
-// see Player.cpp line13
 const float Gravity = 2000.0f;
-
+//this affects the jump and so do not change easily
 void inputEvent(const sf::Event& event) {
     // 修复：正确判断事件类型并读取按键代码
     if (event.type == sf::Event::KeyPressed) {
@@ -38,7 +36,8 @@ void update(double deltatime) {
 
 void render(sf::RenderWindow& window) {
     window.clear(sf::Color(0,150,150,150));
-    //this TRGB is a sort of deep-duckweed blue
+    //this TRGB is a sort of deep duckweed-blue
+    //to prevent my eyes from dying
     player.render(window);
     //you can refer to a referance after all
     window.display();

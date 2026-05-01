@@ -26,5 +26,8 @@
     <ClInclude Include="src\Player.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Downloads\json.hpp">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
