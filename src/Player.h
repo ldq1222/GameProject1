@@ -21,7 +21,7 @@ public:
 	~Player();
 	//auto gets called out when deleated
 	
-	void init(std::string texture_name, sf::Vector2f pos, float gravity);
+	void init(std::string texture_name,float gravity);
 	sf::Sprite& getSprite();
 	sf::Texture& getTexture();
 	void setPosition(sf::Vector2f pos);

@@ -1,5 +1,8 @@
 #include"Player.h"
-
+#include<nlohmann/json.hpp>
+#include<fstream>
+#include<iostream>
+using json = nlohmann::json;
 Player::Player() {
 	//default settings
 	isJump = 0;
@@ -15,8 +18,17 @@ Player::~Player() {
 	//empty&release (?) &save data
 	//sfml can auto clear Sprites
 }
-void Player::init(std::string texture_name, sf::Vector2f pos, float g) {
-	position = pos;
+void Player::init(std::string texture_name, float g) {
+	std::ifstream playerFile("src/player.json", std::ios::binary);
+	if (!playerFile.is_open()) {
+		std::cout << "failed to open player.json\n";
+	}
+	json playerData = json::parse(playerFile);//or  playerFile >> playerData;
+	//I refuse to add an error log in these places.
+	//I cannot understand why you have to write the key and value both in this func...
+	//above means the value() function of json
+	position.x = playerData["position"]["x"];
+	position.y = playerData["position"]["y"];
 	texture.loadFromFile(texture_name);
 	sprite.setTexture(texture);
 	sprite.setPosition(position);
