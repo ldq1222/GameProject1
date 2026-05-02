@@ -27,6 +27,7 @@ public:
 	void setPosition(sf::Vector2f pos);
 	void walk(int dir);
 	void jump(int g);
+	void saveData(const std::string& filePath)const;
 	void update(double deltatime,float g);
 	void render(sf::RenderWindow& window);
 };

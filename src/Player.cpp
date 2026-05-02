@@ -24,7 +24,7 @@ void Player::init(std::string texture_name, float g) {
 		std::cout << "failed to open player.json\n";
 	}
 	json playerData = json::parse(playerFile);//or  playerFile >> playerData;
-	//I refuse to add an error log in these places.
+	//I hate adding an error log in these places.
 	//I cannot understand why you have to write the key and value both in this func...
 	//above means the value() function of json
 	position.x = playerData["position"]["x"];
@@ -33,6 +33,17 @@ void Player::init(std::string texture_name, float g) {
 	sprite.setTexture(texture);
 	sprite.setPosition(position);
 	return;
+}
+void Player::saveData(const std::string& filePath)const {
+	//second const means it doesnt change the state of player
+	json playerData;
+	playerData["position"]["x"] = position.x;
+	playerData["position"]["y"] = position.y;
+	std::ofstream playerFile(filePath, std::ios::binary);
+	if (!playerFile.is_open()) {
+		std::cout << "failed to open playerFile and save\n";
+	}
+	playerFile << playerData.dump(4);
 }
 sf::Sprite& Player::getSprite() {
 	return sprite;
@@ -54,6 +65,7 @@ void Player::jump(int g) {
 	}
 	return;
 }
+
 void Player::update(double deltatime,float g) {
 	position.x += velocity.x * deltatime;
 	position.y += velocity.y * deltatime;

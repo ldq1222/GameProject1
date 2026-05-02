@@ -32,7 +32,10 @@ void inputRealTime() {
         player.walk(-1);
     }
 }
-
+void saveData() {
+    player.saveData("src/player.json");
+    return;
+}
 void update(double deltatime) {
     player.update(deltatime, Gravity);
     return;
@@ -61,6 +64,7 @@ int main() {
         sf::Event event;
         while (window.pollEvent(event)) {
             if (event.type == sf::Event::Closed) {
+                saveData();
                 window.close();
             }
             inputEvent(event);
