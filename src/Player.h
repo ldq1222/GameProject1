@@ -3,47 +3,33 @@
 //initialize=ChuShiHua
 //init() is better than Player() because it
 //can load the Player multiple times 
+
+//Annotation:ZhuShi
 class Player
-{	
+{
 private:
+	bool isJump;
 	sf::Sprite sprite;
 	sf::Texture texture;
-
 	sf::Vector2f position;
-	const float speedCommon = 10.0f;
-	const float speedJump = 2.0f;
-	const float speedDash = 100.0f;
-	const float speedClimb = 5.0f;
-	const float weight = 20.0f;
-	const double lengthCanDash = 40.0f;
-	int directionX;
-	int directionY;
-	sf::Vector2f speedCurrent;
-	bool isDashing;
-	bool isJumping;
-	bool isWalking;
-	bool isFalling;
-	int countJump;
-	double lengthDash;
+	sf::Vector2f velocity;
+	float speed;
+	float jumpVel;
 public:
 	Player();
 	//auto gets called out when created
 	~Player();
 	//auto gets called out when deleated
-	
-	void init(std::string texture_name, sf::Vector2f pos, float gravity);
-<<<<<<< Updated upstream
-	
+
+	void init(std::string texture_name, float gravity);
+	sf::Sprite& getSprite();
+	sf::Texture& getTexture();
+	void setPosition(sf::Vector2f pos);
 	void walk(int dir);
-	void climb(int dir);
-	void fall();
-	void dash(int dir);
-	void jump();
-=======
-	void walk();
->>>>>>> Stashed changes
-	void update(double deltatime);
-	sf::Sprite getSprite();
+	void jump(int g);
+	void saveData(const std::string& filePath)const;
+	void update(double deltatime, float g);
+	void render(sf::RenderWindow& window);
 };
 
 

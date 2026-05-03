@@ -1,81 +1,89 @@
 #include"Player.h"
-
+#include<nlohmann/json.hpp>
+#include<fstream>
+#include<iostream>
+using json = nlohmann::json;
 Player::Player() {
 	//default settings
+	isJump = 0;
 	position.x = 0.0f;
 	position.y = 0.0f;
-	directionX = 1;
-	directionY = 1;
-	double speedCurrent=0.0f;
-	isDashing = 0; 
-	isJumping = 0; //is on ground
-	isWalking = 0;
-	isFalling = 0;
-	countJump = 0;
+	velocity.x = 0.0f;
+	velocity.y = 0.0f;
+	speed = 200.0f;
+	jumpVel = 700.0f;
 }
 
 Player::~Player() {
 	//empty&release (?) &save data
 	//sfml can auto clear Sprites
 }
-void Player::init(std::string texture_name, sf::Vector2f pos, float g) {
-	position = pos;
+void Player::init(std::string texture_name, float g) {
+	std::ifstream playerFile("src/player.json", std::ios::binary);
+	if (!playerFile.is_open()) {
+		std::cout << "failed to open player.json\n";
+	}
+	json playerData = json::parse(playerFile);//or  playerFile >> playerData;
+	//I hate adding an error log in these places.
+	//I cannot understand why you have to write the key and value both in this func...
+	//above means the value() function of json
+	position.x = playerData["position"]["x"];
+	position.y = playerData["position"]["y"];
 	texture.loadFromFile(texture_name);
-//	sprite.setTexture();
+	sprite.setTexture(texture);
 	sprite.setPosition(position);
+	return;
 }
-<<<<<<< Updated upstream
-void Player::walk(int dir) {
-	//put whether walk/dash outside this func
-	isWalking = 1;
-	directionX = dir;
-	speedCurrent.x = speedCommon * directionX;
-//below should be in update
-//	position.x += speedCurrent.x * deltatime;//does the graphics get done here?(no)
-=======
-void Player::walk() {
-	
-}
->>>>>>> Stashed changes
-
-}
-void Player::climb(int dir) {
-	directionY = dir;
-	speedCurrent.y = speedClimb * directionY;
-//	position.x += speedCurrent.y * deltatime;
-}
-void Player::fall() {
-//???
-//	speedCurrent.y  directionY;
-//	position.y += speedCurrent.y * deltatime;
-//	isFalling = 1;
-//how to solve jumping& this 
-}
-void Player::dash(int dir){
-	directionX = dir;//-1 for left
-	isDashing = 1;
-//	if (isWalking) {
-//		isWalking = 0;
-//	}
-	speedCurrent.x = speedDash*directionX;
-}
-void Player::jump(){
-	isJumping = 1;
-	speedCurrent.y = speedJump;
-}
-void Player::update(double deltatime) {
-	if (isWalking) {
-		position.x += speedCurrent.x * deltatime;
+void Player::saveData(const std::string& filePath)const {
+	//second const means it doesnt change the state of player
+	json playerData;
+	playerData["position"]["x"] = position.x;
+	playerData["position"]["y"] = position.y;
+	std::ofstream playerFile(filePath, std::ios::binary);
+	if (!playerFile.is_open()) {
+		std::cout << "failed to open playerFile and save\n";
 	}
-	if (isDashing && lengthDash<lengthCanDash) {
-		position.x += speedCurrent.x * deltatime;
-		lengthDash += speedCurrent.x * deltatime;
-	}
-	if (isJumping) {
-		position.y += speedCurrent.y * deltatime;
-		speedCurrent.y -= weight;
-	}
+	playerFile << playerData.dump(4);
 }
-sf::Sprite getSprite() {
+sf::Sprite& Player::getSprite() {
 	return sprite;
+}
+sf::Texture& Player::getTexture() {
+	return texture;
+}
+void Player::setPosition(sf::Vector2f pos) {
+	position = pos;
+}
+void Player::walk(int dirx) {
+	velocity.x += dirx * speed;
+	return;
+}
+void Player::jump(int g) {
+	if (isJump == 0) {
+		isJump = 1;
+		velocity.y = jumpVel;
+	}
+	return;
+}
+
+void Player::update(double deltatime, float g) {
+	position.x += velocity.x * deltatime;
+	position.y += velocity.y * deltatime;
+	velocity.x = 0;
+	if (isJump) {
+		velocity.y -= g * deltatime;
+	}
+	if (position.y <= 0.0f) {
+		position.y = 0.0f;
+		velocity.y = 0.0f;
+		isJump = 0;
+	}
+
+	return;
+}
+void Player::render(sf::RenderWindow& window) {
+	sprite.setPosition({ position.x,500.0f - position.y });
+	//deals with the current frame of sprite in animation
+	window.draw(sprite);
+	return;
 }
