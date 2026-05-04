@@ -3,6 +3,11 @@
 #include<fstream>
 #include<iostream>
 using json = nlohmann::json;
+//NOTICE:
+//the json does not allow annos after all,though
+//the editor wont warn about this.
+//Anno from player.json:
+//'it seems to be double'
 Player::Player() {
 	//default settings
 	isJump = 0;
@@ -23,7 +28,8 @@ void Player::init(std::string texture_name, float g) {
 	if (!playerFile.is_open()) {
 		std::cout << "failed to open player.json\n";
 	}
-	json playerData = json::parse(playerFile);//or  playerFile >> playerData;
+	json playerData;
+	playerFile >> playerData;
 	//I hate adding an error log in these places.
 	//I cannot understand why you have to write the key and value both in this func...
 	//above means the value() function of json
@@ -38,7 +44,9 @@ void Player::saveData(const std::string& filePath)const {
 	//second const means it doesnt change the state of player
 	json playerData;
 	playerData["position"]["x"] = position.x;
-	playerData["position"]["y"] = position.y;
+	if (!isJump)playerData["position"]["y"] = position.y;
+	else playerData["position"]["y"] = 0.0f;
+	//////of course this needs to be fixed later
 	std::ofstream playerFile(filePath, std::ios::binary);
 	if (!playerFile.is_open()) {
 		std::cout << "failed to open playerFile and save\n";
