@@ -31,6 +31,5 @@ public:
 	void update(double deltatime, float g);
 	void render(sf::RenderWindow& window);
 };
-//very very excited for some unknown reason::)
 
 
