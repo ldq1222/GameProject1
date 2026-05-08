@@ -37,7 +37,7 @@ void Player::init(std::string texture_name, float g) {
 	position.y = playerData["position"]["y"];
 	texture.loadFromFile(texture_name);
 	sprite.setTexture(texture);
-	sprite.setPosition(position);
+sprite.setPosition({ position.x, 500.0f - position.y });
 	return;
 }
 void Player::saveData(const std::string& filePath)const {
@@ -87,6 +87,9 @@ void Player::update(double deltatime, float g) {
 		isJump = 0;
 	}
 
+   
+    sprite.setPosition({ position.x, 500.0f - position.y });
+    
 	return;
 }
 void Player::render(sf::RenderWindow& window) {

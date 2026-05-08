@@ -15,7 +15,8 @@ public:
 	Map(const std::string& textureName);
 	~Map();
 	void init(int id, const std::string& jsonName);
-	
+	int getCurTile(sf::Vector2f pos);
+	sf::RectangleShape getTileBounds(int tileId);
 };
 
 

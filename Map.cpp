@@ -3,6 +3,7 @@
 #include<fstream>
 #include<iostream>
 using json = nlohmann::json;
+const int TileSize = 64;
 Map::Map(const std::string& textureName) {
 	mapId = 0;
 	texture.loadFromFile(textureName);
@@ -25,3 +26,13 @@ void Map::init(int id,const std::string& jsonName) {
 //void Map::saveData() {
 //
 //}
+int Map::getCurTile(sf::Vector2f pos) {
+	int tilex = (int)(pos.x) / TileSize;
+	int tiley = (int)(pos.y) / TileSize;
+	return (tiley << 15) + tilex;
+	//i guess it wouldnt be bigger than 2^15,right
+	
+}
+sf::RectangleShape getTileBounds(int tileId) {
+
+}
