@@ -34,5 +34,6 @@ int Map::getCurTile(sf::Vector2f pos) {
 	
 }
 sf::RectangleShape getTileBounds(int tileId) {
-
+	sf::RectangleShape a;
+	return a;
 }

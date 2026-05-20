@@ -5,6 +5,7 @@
 //can load the Player multiple times 
 
 //Annotation:ZhuShi
+#include "Box.h"
 class Player
 {
 private:
@@ -13,8 +14,9 @@ private:
 	sf::Texture texture;
 	sf::Vector2f position;
 	sf::Vector2f velocity;
+	Box box;
 	float speed;
-	float jumpVel;
+	float jumpVel; 
 public:
 	Player();
 	//auto gets called out when created
@@ -31,5 +33,6 @@ public:
 	void update(double deltatime, float g);
 	void render(sf::RenderWindow& window);
 };
+
 
 
