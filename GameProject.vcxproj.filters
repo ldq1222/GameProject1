@@ -21,12 +21,27 @@
     <ClCompile Include="src\Player.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="Map.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Box.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Player.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Downloads\json.hpp">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Map.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\标头.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Box.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

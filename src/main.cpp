@@ -6,10 +6,11 @@
 #include "Player.h"
 #include <fstream>
 #include <nlohmann/json.hpp>
-using json=nlohmann::json;
+using json = nlohmann::json;
 //finally!!!!!for some reason it automatically repaired itself when I re-updated it 
 //with /showInclude.（because it probably regenerated）
-
+sf::Sprite s;
+sf::Texture t;
 Player player;
 const float Gravity = 2000.0f;
 //this affects the jump and so do not change easily
@@ -32,34 +33,47 @@ void inputRealTime() {
         player.walk(-1);
     }
 }
+
 void saveData() {
     player.saveData("src/player.json");
     return;
 }
 void update(double deltatime) {
     player.update(deltatime, Gravity);
+    sf::FloatRect a=player.getSprite().getGlobalBounds();
+    if (a.intersects(s.getGlobalBounds())) {
+        std::cout << "collided!\n";
+    }
     return;
 }
 
 void render(sf::RenderWindow& window) {
-    window.clear(sf::Color(0,150,150,150));
+    window.clear(sf::Color(0, 150, 150, 150));
     //this TRGB is a sort of deep duckweed-blue
     //to prevent my eyes from dying
     player.render(window);
+    window.draw(s);
     //you can refer to a referance after all
     window.display();
     return;
 }
 
 int main() {
-    player.init("assets/pics/square.png",10.0f);
+    player.init("assets/pics/square.png", 10.0f);
+    
     sf::Clock clock;
     double deltatime = 0.0f;
     sf::RenderWindow window(sf::VideoMode(1920, 1080), "sth");
     // window.setKeyRepeatEnabled(false);
     //this makes sure the event only happens once when the key is pressed, not every frame when the key is held down
     window.setVerticalSyncEnabled(true);
-   
+
+    ///temporary
+    
+    t.loadFromFile("assets/pics/rectangle.png");
+    s.setTexture(t);
+    s.setPosition({ 200.0f,500.0f });
+    ///
     while (window.isOpen()) {
         sf::Event event;
         while (window.pollEvent(event)) {
@@ -77,3 +91,4 @@ int main() {
     }
     return 0;
 }
+
