@@ -24,7 +24,6 @@ void inputEvent(const sf::Event& event) {
 }
 
 sf::Vector2f pos;
-
 void inputRealTime() {
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
         player.walk(1);
