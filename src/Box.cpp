@@ -18,6 +18,3 @@ void Box::init(sf::Vector2f leftop, sf::Vector2f size) {
 sf::RectangleShape Box::getBox() {
 	return box;
 }
-void Box::setPos(sf::Vector2f pos) {
-	box.setPosition(pos);
-}

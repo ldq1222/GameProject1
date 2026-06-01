@@ -40,8 +40,32 @@ void saveData() {
 void update(double deltatime) {
     player.update(deltatime, Gravity);
     sf::FloatRect a=player.getSprite().getGlobalBounds();
-    if (a.intersects(s.getGlobalBounds())) {
+    sf::FloatRect ss = s.getGlobalBounds();
+    if (a.intersects(ss)){
         std::cout << "collided!\n";
+        float lapL = a.left + a.width - ss.left;
+        float lapR = ss.left + ss.width - a.left;
+        float lapU = ss.top - (a.top - a.height);
+        float lapD = a.top - (ss.top - ss.height);
+        float lapMin = std::min(lapL,std::min(lapR,std::min(lapU,lapD)));
+        //GeeX taught me this spagetti code
+        //all faults on them
+        sf::Vector2f pos;
+        pos.x = a.left;
+        pos.y = a.top;
+        if (lapMin == lapL) {
+            pos.x -= lapL;
+        }
+        if (lapMin == lapR) {
+            pos.x += lapR;
+        }
+        if (lapMin == lapU) {
+            pos.y += lapU;
+        }
+        if (lapMin == lapD) {
+            pos.y -= lapD;
+        }
+        player.setPosition(pos);
     }
     return;
 }

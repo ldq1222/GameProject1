@@ -65,6 +65,10 @@ sf::Texture& Player::getTexture() {
 	return texture;
 }
 
+sf::Vector2f Player::getPosition() {
+	return position;
+}
+
 void Player::setPosition(sf::Vector2f pos) {
 	position = pos;
 }
@@ -89,17 +93,19 @@ void Player::update(double deltatime, float g) {
 	if (isJump) {
 		velocity.y -= g * deltatime;
 	}
+	//this also enables the thing to fall down from 
+	//platforms and stuff.
 	if (position.y <= 0.0f) {
 		position.y = 0.0f;
 		velocity.y = 0.0f;
 		isJump = 0;
 	}
-	box.setPos(position);
-    
+	box.getBox().setPosition(position);
     sprite.setPosition({ position.x, 500.0f - position.y });
     
 	return;
 }
+
 void Player::render(sf::RenderWindow& window) {
 	sprite.setPosition({ position.x,500.0f - position.y });
 	//deals with the current frame of sprite in animation

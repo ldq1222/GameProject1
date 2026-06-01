@@ -9,7 +9,7 @@
 class Player
 {
 private:
-	bool isJump;
+	//bool isJump;
 	sf::Sprite sprite;
 	sf::Texture texture;
 	sf::Vector2f position;
@@ -18,6 +18,7 @@ private:
 	float speed;
 	float jumpVel; 
 public:
+	bool isJump;
 	Player();
 	//auto gets called out when created
 	~Player();
@@ -26,6 +27,7 @@ public:
 	void init(std::string texture_name, float gravity);
 	sf::Sprite& getSprite();
 	sf::Texture& getTexture();
+	sf::Vector2f getPosition();
 	void setPosition(sf::Vector2f pos);
 	void walk(int dir);
 	void jump(int g);
