@@ -28,7 +28,11 @@ public:
 	sf::Sprite& getSprite();
 	sf::Texture& getTexture();
 	sf::Vector2f getPosition();
+	sf::Vector2f getVelocity();
+	float getHeight();
+	float getWidth();
 	void setPosition(sf::Vector2f pos);
+	void setVelocity(sf::Vector2f vel);
 	void walk(int dir);
 	void jump(int g);
 	void saveData(const std::string& filePath)const;

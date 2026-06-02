@@ -9,6 +9,7 @@
 using json = nlohmann::json;
 //finally!!!!!for some reason it automatically repaired itself when I re-updated it 
 //with /showInclude.（because it probably regenerated）
+const int HEIGHT = 1080, WIDTH = 1920;
 sf::Sprite s;
 sf::Texture t;
 Player player;
@@ -37,36 +38,40 @@ void saveData() {
     player.saveData("src/player.json");
     return;
 }
+
 void update(double deltatime) {
     player.update(deltatime, Gravity);
-    sf::FloatRect a=player.getSprite().getGlobalBounds();
+    sf::FloatRect a = player.getSprite().getGlobalBounds();
     sf::FloatRect ss = s.getGlobalBounds();
-    if (a.intersects(ss)){
+    float aL = a.left, aD = HEIGHT - (a.top + a.height), aU = aD + a.height, aR = aL + a.width;
+    float ssL = ss.left, ssD = HEIGHT - (ss.top + ss.height), ssU = ssD + ss.height, ssR = ssL + ss.width;
+    if (a.intersects(ss)) {
         std::cout << "collided!\n";
-        float lapL = a.left + a.width - ss.left;
-        float lapR = ss.left + ss.width - a.left;
-        float lapU = ss.top - (a.top - a.height);
-        float lapD = a.top - (ss.top - ss.height);
-        float lapMin = std::min(lapL,std::min(lapR,std::min(lapU,lapD)));
+        float lapL = aR - ssL;
+        float lapR = ssR - aL;
+        float lapU = ssU - aD;
+        float lapD = aU - ssD;
+
+        float lapMin = std::min(lapL, std::min(lapR, std::min(lapU, lapD)));
         //GeeX taught me this spagetti code
         //all faults on them
-        sf::Vector2f pos;
-        pos.x = a.left;
-        pos.y = a.top;
+        sf::Vector2f pos = player.getPosition();
         if (lapMin == lapL) {
             pos.x -= lapL;
         }
-        if (lapMin == lapR) {
+        else if (lapMin == lapR) {
             pos.x += lapR;
         }
-        if (lapMin == lapU) {
+        else if (lapMin == lapU) {
             pos.y += lapU;
+            player.isJump = 0;
         }
-        if (lapMin == lapD) {
+        else if (lapMin == lapD) {
             pos.y -= lapD;
         }
         player.setPosition(pos);
     }
+    std::cout << "isJump = " << player.isJump << "\n";
     return;
 }
 
@@ -86,7 +91,7 @@ int main() {
     
     sf::Clock clock;
     double deltatime = 0.0f;
-    sf::RenderWindow window(sf::VideoMode(1920, 1080), "sth");
+    sf::RenderWindow window(sf::VideoMode(WIDTH,HEIGHT), "sth");
     // window.setKeyRepeatEnabled(false);
     //this makes sure the event only happens once when the key is pressed, not every frame when the key is held down
     window.setVerticalSyncEnabled(true);
