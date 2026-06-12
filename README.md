@@ -1,7 +1,7 @@
-This is my first half testing game.
+I am making this game for my younger sister::)
 
-It is meant to be a 2D platform game consisting of:
- 
-10 rooms
+basically it's a sandbox where you earn materials by doing simple math problems (just the +-*/ under 100)
 
-2 boss(s)
+And a lot of the code could be reused in my next games 
+
+(if there is, it would be a platformer)
