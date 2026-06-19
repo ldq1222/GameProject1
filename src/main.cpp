@@ -15,6 +15,7 @@ sf::Texture t;
 Player player;
 const float Gravity = 2000.0f;
 //this affects the jump and so do not change easily
+const float Deviation = 0.00005;
 void inputEvent(const sf::Event& event) {
     if (event.type == sf::Event::KeyPressed) {
         if (event.key.code == sf::Keyboard::Space) {
@@ -43,34 +44,64 @@ void update(double deltatime) {
     player.update(deltatime, Gravity);
     sf::FloatRect a = player.getSprite().getGlobalBounds();
     sf::FloatRect ss = s.getGlobalBounds();
-    float aL = a.left, aD = HEIGHT - (a.top + a.height), aU = aD + a.height, aR = aL + a.width;
-    float ssL = ss.left, ssD = HEIGHT - (ss.top + ss.height), ssU = ssD + ss.height, ssR = ssL + ss.width;
-    if (a.intersects(ss)) {
-        std::cout << "collided!\n";
-        float lapL = aR - ssL;
-        float lapR = ssR - aL;
-        float lapU = ssU - aD;
-        float lapD = aU - ssD;
+    float ax = a.left + a.width / 2;
+    float ay = a.top - a.height / 2;
+    float ssx = ss.left + ss.width / 2;
+    float ssy = ss.top -= ss.height / 2;
 
-        float lapMin = std::min(lapL, std::min(lapR, std::min(lapU, lapD)));
-        //GeeX taught me this spagetti code
-        //all faults on them
-        sf::Vector2f pos = player.getPosition();
-        if (lapMin == lapL) {
-            pos.x -= lapL;
+    float dx = fabs(ax - ssx);
+    float dy = fabs(ay - ssy);
+    float ox = a.width / 2 + ss.width / 2;
+    float oy = a.height / 2 + ss.height / 2;
+    float lapX = ox - dx;
+    float lapY = oy - dy;
+    sf::Vector2f v = player.getVelocity();
+    if (!(lapX < Deviation && lapY < Deviation)) {
+        if (fabs(lapX - lapY) < Deviation) {
+            if (v.x > v.y) {
+                //deal with x
+                if (ax <= ssx) {
+                    ax -= lapX+Deviation;
+                    //it wont effect the players touch ,right? 
+                }
+                else if (ax > ssx) {
+                    ax += lapX + Deviation;
+                }
+                v.x = 0;
+            }
+            else {
+                if (ay <= ssy) {
+                    ay -= lapY + Deviation;
+                }
+                else if (ay > ssy) {
+                    ay += lapY + Deviation;
+                }
+                v.y = 0;//?
+            }
         }
-        else if (lapMin == lapR) {
-            pos.x += lapR;
+        else if (lapY <= lapX) {
+            if (ay <= ssy) {
+                ay -= lapY + Deviation;
+            }
+            else if (ay > ssy) {
+                ay += lapY + Deviation;
+            }
+            v.y = 0;//?
         }
-        else if (lapMin == lapU) {
-            pos.y += lapU;
-            player.isJump = 0;
+        else if (lapX > lapY) {
+            if (ax <= ssx) {
+                ax -= lapX + Deviation;
+            }
+            else if (ax > ssx) {
+                ax += lapX + Deviation;
+            }
+            v.x = 0;
         }
-        else if (lapMin == lapD) {
-            pos.y -= lapD;
-        }
-        player.setPosition(pos);
+        player.setVelocity(v);
+        player.setPosition({ ax - a.width / 2,ay + a.height / 2 });
     }
+    
+    
     std::cout << "isJump = " << player.isJump << "\n";
     return;
 }
