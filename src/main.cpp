@@ -12,6 +12,8 @@ using json = nlohmann::json;
 const int HEIGHT = 1080, WIDTH = 1920;
 sf::Sprite s;
 sf::Texture t;
+//sf::Sprite sths;
+//sf::Texture stht;
 Player player;
 const float Gravity = 2000.0f;
 //this affects the jump and so do not change easily
@@ -89,6 +91,7 @@ void render(sf::RenderWindow& window) {
     player.render(window);
     window.draw(s);
     //you can refer to a referance after all
+    window.draw(sths);
     window.display();
     return;
 }
@@ -108,6 +111,12 @@ int main() {
     t.loadFromFile("assets/pics/rectangle.png");
     s.setTexture(t);
     s.setPosition({ 200.0f,500.0f });
+    ///
+//    stht.loadFromFile("assets/pics/person2.png");
+//    sths.setTexture(stht);
+//    sths.setPosition({ 800.0f,500.0f });
+    //picture works very well
+    //so one tile is 2000*200.
     ///
     while (window.isOpen()) {
         sf::Event event;
