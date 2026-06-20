@@ -44,64 +44,40 @@ void update(double deltatime) {
     player.update(deltatime, Gravity);
     sf::FloatRect a = player.getSprite().getGlobalBounds();
     sf::FloatRect ss = s.getGlobalBounds();
-    float ax = a.left + a.width / 2;
-    float ay = a.top - a.height / 2;
-    float ssx = ss.left + ss.width / 2;
-    float ssy = ss.top -= ss.height / 2;
-
-    float dx = fabs(ax - ssx);
-    float dy = fabs(ay - ssy);
-    float ox = a.width / 2 + ss.width / 2;
-    float oy = a.height / 2 + ss.height / 2;
-    float lapX = ox - dx;
-    float lapY = oy - dy;
+    sf::Vector2f aa = player.getPosition();
     sf::Vector2f v = player.getVelocity();
-    if (!(lapX < Deviation && lapY < Deviation)) {
-        if (fabs(lapX - lapY) < Deviation) {
-            if (v.x > v.y) {
-                //deal with x
-                if (ax <= ssx) {
-                    ax -= lapX+Deviation;
-                    //it wont effect the players touch ,right? 
-                }
-                else if (ax > ssx) {
-                    ax += lapX + Deviation;
-                }
-                v.x = 0;
+    if (a.intersects(ss)) {
+        float x1 = std::fabs(a.left + a.width - ss.left);
+        float x2 = std::fabs(ss.left + ss.width - a.left);
+        float y1 = std::fabs(a.top - (ss.top - ss.height));
+        float y2 = std::fabs(ss.top - (a.top - a.height));
+        float lapX = std::min(x1,x2);
+        float lapY = std::min(y1,y2);
+        //the advantages of not having <bits/stdc++.h>
+        if (lapX > lapY) {
+            if (lapY == y2) {
+                //from top
+                aa.y += lapY;
+                player.isJump = 0;
+                v.y = 0;
+                // I DEFINATELY had written an onGround 
             }
-            else {
-                if (ay <= ssy) {
-                    ay -= lapY + Deviation;
-                }
-                else if (ay > ssy) {
-                    ay += lapY + Deviation;
-                }
-                v.y = 0;//?
+            else if (lapY == y1) {
+                aa.y -= lapY;
             }
         }
-        else if (lapY <= lapX) {
-            if (ay <= ssy) {
-                ay -= lapY + Deviation;
+        else if (lapY >= lapX) {
+            if (lapX == x1) {
+                //from left
+                aa.x -= lapX;
             }
-            else if (ay > ssy) {
-                ay += lapY + Deviation;
+            else if (lapX == x2) {
+                aa.x += lapX;
             }
-            v.y = 0;//?
         }
-        else if (lapX > lapY) {
-            if (ax <= ssx) {
-                ax -= lapX + Deviation;
-            }
-            else if (ax > ssx) {
-                ax += lapX + Deviation;
-            }
-            v.x = 0;
-        }
+        player.setPosition(aa);
         player.setVelocity(v);
-        player.setPosition({ ax - a.width / 2,ay + a.height / 2 });
     }
-    
-    
     std::cout << "isJump = " << player.isJump << "\n";
     return;
 }
