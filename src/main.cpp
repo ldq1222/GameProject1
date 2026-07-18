@@ -12,9 +12,12 @@ using json = nlohmann::json;
 const int HEIGHT = 1080, WIDTH = 1920;
 sf::Sprite s;
 sf::Texture t;
+//sf::Sprite sths;
+//sf::Texture stht;
 Player player;
 const float Gravity = 2000.0f;
 //this affects the jump and so do not change easily
+const float Deviation = 0.00005;
 void inputEvent(const sf::Event& event) {
     if (event.type == sf::Event::KeyPressed) {
         if (event.key.code == sf::Keyboard::Space) {
@@ -43,33 +46,39 @@ void update(double deltatime) {
     player.update(deltatime, Gravity);
     sf::FloatRect a = player.getSprite().getGlobalBounds();
     sf::FloatRect ss = s.getGlobalBounds();
-    float aL = a.left, aD = HEIGHT - (a.top + a.height), aU = aD + a.height, aR = aL + a.width;
-    float ssL = ss.left, ssD = HEIGHT - (ss.top + ss.height), ssU = ssD + ss.height, ssR = ssL + ss.width;
+    sf::Vector2f aa = player.getPosition();
+    sf::Vector2f v = player.getVelocity();
     if (a.intersects(ss)) {
-        std::cout << "collided!\n";
-        float lapL = aR - ssL;
-        float lapR = ssR - aL;
-        float lapU = ssU - aD;
-        float lapD = aU - ssD;
-
-        float lapMin = std::min(lapL, std::min(lapR, std::min(lapU, lapD)));
-        //GeeX taught me this spagetti code
-        //all faults on them
-        sf::Vector2f pos = player.getPosition();
-        if (lapMin == lapL) {
-            pos.x -= lapL;
+        float x1 = std::fabs(a.left + a.width - ss.left);
+        float x2 = std::fabs(ss.left + ss.width - a.left);
+        float y1 = std::fabs(a.top - (ss.top - ss.height));
+        float y2 = std::fabs(ss.top - (a.top - a.height));
+        float lapX = std::min(x1,x2);
+        float lapY = std::min(y1,y2);
+        //the advantages of not having <bits/stdc++.h>
+        if (lapX > lapY) {
+            if (lapY == y2) {
+                //from top
+                aa.y += lapY;
+                player.isJump = 0;
+                v.y = 0;
+                // I DEFINATELY had written an onGround 
+            }
+            else if (lapY == y1) {
+                aa.y -= lapY;
+            }
         }
-        else if (lapMin == lapR) {
-            pos.x += lapR;
+        else if (lapY >= lapX) {
+            if (lapX == x1) {
+                //from left
+                aa.x -= lapX;
+            }
+            else if (lapX == x2) {
+                aa.x += lapX;
+            }
         }
-        else if (lapMin == lapU) {
-            pos.y += lapU;
-            player.isJump = 0;
-        }
-        else if (lapMin == lapD) {
-            pos.y -= lapD;
-        }
-        player.setPosition(pos);
+        player.setPosition(aa);
+        player.setVelocity(v);
     }
     std::cout << "isJump = " << player.isJump << "\n";
     return;
@@ -82,6 +91,7 @@ void render(sf::RenderWindow& window) {
     player.render(window);
     window.draw(s);
     //you can refer to a referance after all
+//    window.draw(sths);
     window.display();
     return;
 }
@@ -101,6 +111,12 @@ int main() {
     t.loadFromFile("assets/pics/rectangle.png");
     s.setTexture(t);
     s.setPosition({ 200.0f,500.0f });
+    ///
+//    stht.loadFromFile("assets/pics/person2.png");
+//    sths.setTexture(stht);
+//    sths.setPosition({ 800.0f,500.0f });
+    //picture works very well
+    //so one tile is 2000*200.
     ///
     while (window.isOpen()) {
         sf::Event event;

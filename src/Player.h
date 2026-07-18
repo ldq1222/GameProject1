@@ -19,6 +19,7 @@ private:
 	float jumpVel; 
 public:
 	bool isJump;
+	bool onGround;
 	Player();
 	//auto gets called out when created
 	~Player();

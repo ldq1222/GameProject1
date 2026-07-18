@@ -11,6 +11,7 @@ using json = nlohmann::json;
 Player::Player() {
 	//default settings
 	isJump = 0;
+	onGround = 1;
 	position.x = 0.0f;
 	position.y = 0.0f;
 	velocity.x = 0.0f;
@@ -47,7 +48,7 @@ void Player::saveData(const std::string& filePath)const {
 	//second const means it doesnt change the state of player
 	json playerData;
 	playerData["position"]["x"] = position.x;
-	if (!isJump)playerData["position"]["y"] = position.y;
+	if (onGround)playerData["position"]["y"] = position.y;
 	else playerData["position"]["y"] = 0.0f;
 	//////of course this needs to be fixed later
 	std::ofstream playerFile(filePath, std::ios::binary);
@@ -96,10 +97,9 @@ void Player::walk(int dirx) {
 }
 
 void Player::jump(int g) {
-	if (isJump == 0) {
 		isJump = 1;
+		onGround = 0;
 		velocity.y = jumpVel;
-	}
 	return;
 }
 
@@ -107,7 +107,7 @@ void Player::update(double deltatime, float g) {
 	position.x += velocity.x * deltatime;
 	position.y += velocity.y * deltatime;
 	velocity.x = 0;
-	if (isJump) {
+	if (!onGround) {
 		velocity.y -= g * deltatime;
 	}
 	//this also enables the thing to fall down from 
@@ -116,6 +116,7 @@ void Player::update(double deltatime, float g) {
 		position.y = 0.0f;
 		velocity.y = 0.0f;
 		isJump = 0;
+		onGround = 1;
 	}
 	box.getBox().setPosition(position);
     sprite.setPosition({ position.x, 500.0f - position.y });
