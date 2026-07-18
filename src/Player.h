@@ -15,6 +15,7 @@ private:
 	sf::Vector2f position;
 	sf::Vector2f velocity;
 	Box box;
+	//the box has apparently no use.
 	float speed;
 	float jumpVel; 
 public:
@@ -36,7 +37,8 @@ public:
 	void walk(int dir);
 	void jump(int g);
 	void saveData(const std::string& filePath)const;
-	void update(double deltatime, float g);
+	void collide(sf::Sprite& obstacle);
+	void update(double deltatime, float g, sf::Sprite& obstacle);
 	void render(sf::RenderWindow& window);
 };
 

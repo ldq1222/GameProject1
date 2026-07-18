@@ -39,37 +39,9 @@ void saveData() {
     return;
 }
 void update(double deltatime) {
-    player.update(deltatime, Gravity);
-    sf::FloatRect a = player.getSprite().getGlobalBounds();
-    sf::FloatRect ss = s.getGlobalBounds();
-    float aL = a.left, aD = HEIGHT - (a.top + a.height), aU = aD + a.height, aR = aL + a.width;
-    float ssL = ss.left, ssD = HEIGHT - (ss.top + ss.height), ssU = ssD + ss.height, ssR = ssL + ss.width;
-    if (a.intersects(ss)) {
-        std::cout << "collided!\n";
-        float lapL = aR - ssL;
-        float lapR = ssR - aL;
-        float lapU = ssU - aD;
-        float lapD = aU - ssD;
-
-        float lapMin = std::min(lapL, std::min(lapR, std::min(lapU, lapD)));
-        //GeeX taught me this spagetti code
-        //all faults on them
-        sf::Vector2f pos = player.getPosition();
-        if (lapMin == lapL) {
-            pos.x -= lapL;
-        }
-        else if (lapMin == lapR) {
-            pos.x += lapR;
-        }
-        else if (lapMin == lapU) {
-            pos.y += lapU;
-            player.isJump = 0;
-        }
-        else if (lapMin == lapD) {
-            pos.y -= lapD;
-        }
-        player.setPosition(pos);
-    }
+    player.update(deltatime, Gravity,s);
+    //I realized that the collide should be put in the upd()
+    //also the collide() doesnt need pass-bys,because later it is caled by the position.
     std::cout << "isJump = " << player.isJump << "\n";
     return;
 }

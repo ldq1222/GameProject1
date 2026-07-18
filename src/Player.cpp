@@ -8,6 +8,7 @@ using json = nlohmann::json;
 //the editor wont warn about this.
 //Anno from player.json:
 //'it seems to be double'
+const int HEIGHT = 1080, WIDTH = 1920;//this is bad
 Player::Player() {
 	//default settings
 	isJump = 0;
@@ -100,8 +101,39 @@ void Player::jump(int g) {
 	}
 	return;
 }
+void Player::collide(sf::Sprite& obstacle) {//later this pass-by-reference will be removed
+	sf::FloatRect a = getSprite().getGlobalBounds();//this is bad
+	sf::FloatRect ss = obstacle.getGlobalBounds();
+	float aL = a.left, aD = HEIGHT - (a.top + a.height), aU = aD + a.height, aR = aL + a.width;
+	float ssL = ss.left, ssD = HEIGHT - (ss.top + ss.height), ssU = ssD + ss.height, ssR = ssL + ss.width;
+	if (a.intersects(ss)) {
+		std::cout << "collided!\n";
+		float lapL = aR - ssL;
+		float lapR = ssR - aL;
+		float lapU = ssU - aD;
+		float lapD = aU - ssD;
 
-void Player::update(double deltatime, float g) {
+		float lapMin = std::min(lapL, std::min(lapR, std::min(lapU, lapD)));
+		//GeeX taught me this spagetti code
+		//all faults on them
+		sf::Vector2f pos =getPosition();
+		if (lapMin == lapL) {
+			pos.x -= lapL;
+		}
+		else if (lapMin == lapR) {
+			pos.x += lapR;
+		}
+		else if (lapMin == lapU) {
+			pos.y += lapU;
+			isJump = 0;
+		}
+		else if (lapMin == lapD) {
+			pos.y -= lapD;
+		}
+		setPosition(pos);
+	}
+}
+void Player::update(double deltatime, float g,sf::Sprite& obstacle) {
 	position.x += velocity.x * deltatime;
 	position.y += velocity.y * deltatime;
 	velocity.x = 0;
@@ -110,14 +142,15 @@ void Player::update(double deltatime, float g) {
 	}
 	//this also enables the thing to fall down from 
 	//platforms and stuff.
+	//upd:so this is actually a reverse'OnGround', which I have wrote before in some other timeline.
 	if (position.y <= 0.0f) {
 		position.y = 0.0f;
 		velocity.y = 0.0f;
 		isJump = 0;
 	}
 	box.getBox().setPosition(position);
-    sprite.setPosition({ position.x, 500.0f - position.y });
-    
+    sprite.setPosition({ position.x, 500.0f - position.y });//see above,this is bad
+	collide(obstacle);
 	return;
 }
 
