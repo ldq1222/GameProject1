@@ -5,30 +5,40 @@
 //can load the Player multiple times 
 
 //Annotation:ZhuShi
+#include "Box.h"
 class Player
-{	
+{
 private:
-	bool isJump;
+	//bool isJump;
 	sf::Sprite sprite;
 	sf::Texture texture;
 	sf::Vector2f position;
 	sf::Vector2f velocity;
+	Box box;
+	//the box has apparently no use.
 	float speed;
-	float jumpVel;
+	float jumpVel; 
 public:
+	bool isJump;
 	Player();
 	//auto gets called out when created
 	~Player();
 	//auto gets called out when deleated
-	
-	void init(std::string texture_name,float gravity);
+
+	void init(std::string texture_name, float gravity);
 	sf::Sprite& getSprite();
 	sf::Texture& getTexture();
+	sf::Vector2f getPosition();
 	void setPosition(sf::Vector2f pos);
+	sf::Vector2f getVelocity();
+	float getHeight();
+	float getWidth();
+	void setVelocity(sf::Vector2f vel);
 	void walk(int dir);
 	void jump(int g);
 	void saveData(const std::string& filePath)const;
-	void update(double deltatime,float g);
+	void collide(sf::Sprite& obstacle);
+	void update(double deltatime, float g, sf::Sprite& obstacle);
 	void render(sf::RenderWindow& window);
 };
 
