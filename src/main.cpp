@@ -3,15 +3,17 @@
 #include <SFML/System.hpp>
 #include <time.h>
 #include <iostream>
-#include "Player.h"
 #include <fstream>
 #include <nlohmann/json.hpp>
+#include "Player.h"
+#include "Map.h"
 using json = nlohmann::json;
 //finally!!!!!for some reason it automatically repaired itself when I re-updated it 
 //with /showInclude.（because it probably regenerated）
 sf::Sprite s;
 sf::Texture t;
 const int HEIGHT = 1080, WIDTH = 1920;
+Map map;
 Player player;
 const float Gravity = 2000.0f;
 //this affects the jump and so do not change easily
@@ -59,6 +61,7 @@ void render(sf::RenderWindow& window) {
 }
 
 int main() {
+    map.init(1,"src/map.json");
     player.init("assets/pics/square.png", 10.0f);
     
     sf::Clock clock;

@@ -12,12 +12,10 @@ private:
 	sf::Texture texture;
 	sf::Sprite sprite;
 public:
-	Map(const std::string& textureName);
+	Map( /*const std::string& textureName*/ );
+//	//i figured out that it would save time by loading it only once 
+//	//instead of stuffing it in init()
 	~Map();
 	void init(int id, const std::string& jsonName);
-	int getCurTile(sf::Vector2f pos);
-	sf::RectangleShape getTileBounds(int tileId);
+	
 };
-
-
-

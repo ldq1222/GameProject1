@@ -140,17 +140,16 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Map.cpp" />
     <ClCompile Include="src\Box.cpp" />
     <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\Map.cpp" />
     <ClCompile Include="src\Player.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Downloads\json.hpp" />
-    <ClInclude Include="Map.h" />
     <ClInclude Include="src\Box.h" />
+    <ClInclude Include="src\Map.h" />
     <ClInclude Include="src\Player.h" />
-    <ClInclude Include="src\标头.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
