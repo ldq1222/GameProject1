@@ -16,7 +16,7 @@ Player::Player() {
 	velocity.x = 0.0f;
 	velocity.y = 0.0f;
 	speed = 200.0f;
-	jumpVel = 1000.0f;
+	jumpVel = 700.0f;
 	box.init(position,{100.0f,100.0f});
 }
 
@@ -69,25 +69,8 @@ sf::Vector2f Player::getPosition() {
 	return position;
 }
 
-sf::Vector2f Player::getVelocity() {
-	return velocity;
-}
-
-float Player::getHeight() {
-	return box.getBox().getSize().y;
-}
-
-float Player::getWidth() {
-	return box.getBox().getSize().x;
-	//super invoke-tion 
-}
-
 void Player::setPosition(sf::Vector2f pos) {
 	position = pos;
-}
-
-void Player::setVelocity(sf::Vector2f vel) {
-	velocity = vel;
 }
 
 void Player::walk(int dirx) {
