@@ -91,7 +91,7 @@ void render(sf::RenderWindow& window) {
     player.render(window);
     window.draw(s);
     //you can refer to a referance after all
-    window.draw(sths);
+//    window.draw(sths);
     window.display();
     return;
 }
