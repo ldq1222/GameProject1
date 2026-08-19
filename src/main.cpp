@@ -50,12 +50,25 @@ void update(double deltatime) {
 
 
 void render(sf::RenderWindow& window) {
+    //needs an upside down globally.
+    //current is in player.
     window.clear(sf::Color(0, 150, 150, 150));
     //this TRGB is a sort of deep duckweed-blue
     //to prevent my eyes from dying
+///upd26.8.19: duckweed-blue is now a sign of unsuccessful tile-loading. 
+    
+    for (int i = 1; i <= 20; i++) {
+        for (int j = 1; j <= 20; j++) {
+            //for some reason I mixed Tile with Map...
+            //reimplement is for later[yawn]
+            map.tileRender(i * 10000 + j, 1, window);
+        }//tttt praying.
+    }
+
     player.render(window);
     window.draw(s);
     //you can refer to a referance after all
+
     window.display();
     return;
 }
@@ -76,6 +89,7 @@ int main() {
     t.loadFromFile("assets/pics/rectangle.png");
     s.setTexture(t);
     s.setPosition({ 200.0f,500.0f });
+    //emergency!!!
     ///
     while (window.isOpen()) {
         sf::Event event;

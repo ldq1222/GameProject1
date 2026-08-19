@@ -155,7 +155,7 @@ void Player::update(double deltatime, float g,sf::Sprite& obstacle) {
 }
 
 void Player::render(sf::RenderWindow& window) {
-	sprite.setPosition({ position.x,500.0f - position.y });
+	sprite.setPosition({ position.x,830.0f - position.y });
 	//deals with the current frame of sprite in animation
 	window.draw(sprite);
 	return;
