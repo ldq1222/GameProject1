@@ -134,9 +134,11 @@ void Player::collide(sf::Sprite& obstacle) {//later this pass-by-reference will 
 	}
 }
 void Player::update(double deltatime, float g,sf::Sprite& obstacle) {
+	//1
 	position.x += velocity.x * deltatime;
 	position.y += velocity.y * deltatime;
 	velocity.x = 0;
+	//2
 	if (isJump) {
 		velocity.y -= g * deltatime;
 	}
@@ -148,6 +150,7 @@ void Player::update(double deltatime, float g,sf::Sprite& obstacle) {
 		velocity.y = 0.0f;
 		isJump = 0;
 	}
+	//3 collision 和render混起来了，要改
 	box.getBox().setPosition(position);
     sprite.setPosition({ position.x, 500.0f - position.y });//see above,this is bad
 	collide(obstacle);
